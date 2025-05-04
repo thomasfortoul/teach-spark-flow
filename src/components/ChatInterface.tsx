@@ -21,13 +21,21 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ phase, promptSuggestions 
   const handleSendMessage = () => {
     if (!input.trim()) return;
     
-    const newMessages = [
-      ...messages,
-      { role: 'user', content: input },
-      { role: 'assistant', content: `This is a placeholder response for "${input}". In a real implementation, this would call the AI model to generate a helpful response for the ${phase} phase.` }
-    ];
+    const newUserMessage: { role: 'user' | 'assistant'; content: string } = { 
+      role: 'user', 
+      content: input 
+    };
     
-    setMessages(newMessages);
+    const newAIMessage: { role: 'user' | 'assistant'; content: string } = { 
+      role: 'assistant', 
+      content: `This is a placeholder response for "${input}". In a real implementation, this would call the AI model to generate a helpful response for the ${phase} phase.` 
+    };
+    
+    setMessages(prevMessages => [
+      ...prevMessages,
+      newUserMessage,
+      newAIMessage
+    ]);
     setInput('');
   };
 
