@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import OnboardingSteps from '@/components/OnboardingSteps';
+import SyllabusUploadStep from '@/components/onboarding/SyllabusUploadStep';
 import CourseOverviewStep from '@/components/onboarding/CourseOverviewStep';
 import LearningGoalsStep from '@/components/onboarding/LearningGoalsStep';
 import AssessmentPracticesStep from '@/components/onboarding/AssessmentPracticesStep';
@@ -14,11 +15,12 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, Save } from 'lucide-react';
 
 const steps = [
-  { label: 'Course Overview', description: 'Basic course information' },
+  { label: 'Get Started', description: 'Upload syllabus' },
+  { label: 'Course Overview', description: 'Basic information' },
   { label: 'Learning Goals', description: 'Outcomes and structure' },
   { label: 'Assessment', description: 'Evaluation methods' },
   { label: 'Delivery Context', description: 'Teaching environment' },
-  { label: 'Documents', description: 'Upload course materials' },
+  { label: 'Documents', description: 'Upload materials' },
   { label: 'AI Review', description: 'Review and fill gaps' },
   { label: 'Fact Sheet', description: 'Finalize course profile' }
 ];
@@ -144,21 +146,27 @@ const CourseOnboarding = () => {
   const renderStep = () => {
     switch (currentStep) {
       case 0:
-        return <CourseOverviewStep data={courseData} updateData={updateCourseData} />;
+        return <SyllabusUploadStep 
+                data={courseData} 
+                updateData={updateCourseData} 
+                onExtract={() => setCurrentStep(1)}
+              />;
       case 1:
-        return <LearningGoalsStep data={courseData} updateData={updateCourseData} />;
+        return <CourseOverviewStep data={courseData} updateData={updateCourseData} />;
       case 2:
-        return <AssessmentPracticesStep data={courseData} updateData={updateCourseData} />;
+        return <LearningGoalsStep data={courseData} updateData={updateCourseData} />;
       case 3:
-        return <DeliveryContextStep data={courseData} updateData={updateCourseData} />;
+        return <AssessmentPracticesStep data={courseData} updateData={updateCourseData} />;
       case 4:
-        return <DocumentUploadStep data={courseData} updateData={updateCourseData} />;
+        return <DeliveryContextStep data={courseData} updateData={updateCourseData} />;
       case 5:
-        return <AIReviewStep data={courseData} updateData={updateCourseData} />;
+        return <DocumentUploadStep data={courseData} updateData={updateCourseData} />;
       case 6:
+        return <AIReviewStep data={courseData} updateData={updateCourseData} />;
+      case 7:
         return <FactSheetEditorStep data={courseData} updateData={updateCourseData} />;
       default:
-        return <CourseOverviewStep data={courseData} updateData={updateCourseData} />;
+        return <SyllabusUploadStep data={courseData} updateData={updateCourseData} onExtract={handleNext} />;
     }
   };
 
@@ -194,6 +202,11 @@ const CourseOnboarding = () => {
               <Button onClick={handleSave} className="flex items-center gap-2">
                 <Save size={16} />
                 Save Course
+              </Button>
+            ) : currentStep === 0 ? (
+              <Button onClick={() => setCurrentStep(1)} className="flex items-center gap-2">
+                Skip AI Extraction
+                <ArrowRight size={16} />
               </Button>
             ) : (
               <Button onClick={handleNext} className="flex items-center gap-2">

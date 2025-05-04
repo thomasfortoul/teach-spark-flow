@@ -64,21 +64,14 @@ const AIReviewStep: React.FC<AIReviewStepProps> = ({ data, updateData }) => {
       });
 
       // Add AI message
-      const newMessages = [...messages];
+      const newAssistantMessage: Message = {
+        role: 'assistant',
+        content: missing.length > 0
+          ? `I've analyzed your course information and created a draft fact sheet. However, I noticed some important information is missing: ${missing.join(', ')}. Would you like to provide any of this information now?`
+          : "I've analyzed your course information and created a comprehensive fact sheet. Would you like to review it or make any adjustments before finalizing?"
+      };
       
-      if (missing.length > 0) {
-        newMessages.push({
-          role: 'assistant',
-          content: `I've analyzed your course information and created a draft fact sheet. However, I noticed some important information is missing: ${missing.join(', ')}. Would you like to provide any of this information now?`
-        });
-      } else {
-        newMessages.push({
-          role: 'assistant',
-          content: "I've analyzed your course information and created a comprehensive fact sheet. Would you like to review it or make any adjustments before finalizing?"
-        });
-      }
-      
-      setMessages(newMessages);
+      setMessages(prevMessages => [...prevMessages, newAssistantMessage]);
       setIsAnalyzing(false);
     }, 2000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,23 +80,22 @@ const AIReviewStep: React.FC<AIReviewStepProps> = ({ data, updateData }) => {
   const handleSendMessage = () => {
     if (!input.trim()) return;
     
-    const newMessages = [
-      ...messages,
-      { role: 'user', content: input },
-    ];
+    const userMessage: Message = {
+      role: 'user',
+      content: input
+    };
     
-    setMessages(newMessages);
+    setMessages(prevMessages => [...prevMessages, userMessage]);
     setInput('');
     
     // Simulate AI response
     setTimeout(() => {
-      setMessages([
-        ...newMessages,
-        { 
-          role: 'assistant', 
-          content: "Thank you for that additional information. I've updated your course fact sheet with these details. You can review and edit it in the next step."
-        }
-      ]);
+      const assistantResponse: Message = { 
+        role: 'assistant', 
+        content: "Thank you for that additional information. I've updated your course fact sheet with these details. You can review and edit it in the next step."
+      };
+      
+      setMessages(prevMessages => [...prevMessages, assistantResponse]);
     }, 1000);
   };
 
