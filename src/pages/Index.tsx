@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import PhaseCard from '@/components/PhaseCard';
 import PhasePanel from '@/components/PhasePanel';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, BookText } from 'lucide-react';
 
 const Index = () => {
   const [activePhase, setActivePhase] = useState<'planning' | 'presentation' | 'evaluation' | null>(null);
@@ -23,17 +23,25 @@ const Index = () => {
       <Header />
       
       <main className="flex-1 container py-8">
-        <div className="mb-8 flex justify-between items-center">
+        <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h2 className="text-3xl font-serif font-medium">Teaching Assistant Dashboard</h2>
-            <p className="text-muted-foreground">Select a teaching phase to begin working with AI assistance</p>
+            <p className="text-muted-foreground">Select a teaching phase or guided task to begin working with AI assistance</p>
           </div>
-          <Link to="/course-setup">
-            <Button className="flex items-center gap-2">
-              <Plus size={16} />
-              Setup New Course
-            </Button>
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <Link to="/course-setup">
+              <Button className="flex items-center gap-2">
+                <Plus size={16} />
+                Setup New Course
+              </Button>
+            </Link>
+            <Link to="/tasks">
+              <Button variant="outline" className="flex items-center gap-2">
+                <BookText size={16} />
+                Guided Tasks
+              </Button>
+            </Link>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">

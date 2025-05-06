@@ -9,33 +9,398 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      users: {
+      course_documents: {
+        Row: {
+          course_id: string
+          created_at: string
+          file_name: string
+          file_path: string
+          file_size: number
+          file_type: string
+          id: string
+          is_syllabus: boolean
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          file_name: string
+          file_path: string
+          file_size: number
+          file_type: string
+          id?: string
+          is_syllabus?: boolean
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          file_name?: string
+          file_path?: string
+          file_size?: number
+          file_type?: string
+          id?: string
+          is_syllabus?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_documents_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_metadata: {
+        Row: {
+          course_id: string
+          created_at: string
+          field_name: string
+          id: string
+          needs_confirmation: boolean
+          updated_at: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          field_name: string
+          id?: string
+          needs_confirmation?: boolean
+          updated_at?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          field_name?: string
+          id?: string
+          needs_confirmation?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_metadata_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      courses: {
+        Row: {
+          code: string | null
+          created_at: string
+          duration: string | null
+          id: string
+          language: string | null
+          level: string | null
+          status: string
+          student_count: string | null
+          subject: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          weekly_structure: string | null
+        }
+        Insert: {
+          code?: string | null
+          created_at?: string
+          duration?: string | null
+          id?: string
+          language?: string | null
+          level?: string | null
+          status?: string
+          student_count?: string | null
+          subject?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+          weekly_structure?: string | null
+        }
+        Update: {
+          code?: string | null
+          created_at?: string
+          duration?: string | null
+          id?: string
+          language?: string | null
+          level?: string | null
+          status?: string
+          student_count?: string | null
+          subject?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          weekly_structure?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "courses_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      evaluation_types: {
+        Row: {
+          course_id: string
+          created_at: string
+          evaluation_type: string
+          id: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          evaluation_type: string
+          id?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          evaluation_type?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evaluation_types_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fact_sheets: {
+        Row: {
+          assessments: string | null
+          completed_sections: string[] | null
+          course_id: string
+          course_sequence: string | null
+          created_at: string
+          id: string
+          learning_outcomes: string | null
+          notes: string | null
+          overview: string | null
+          tags: string[] | null
+          teaching_modalities: string | null
+          tools_platforms: string | null
+          updated_at: string
+        }
+        Insert: {
+          assessments?: string | null
+          completed_sections?: string[] | null
+          course_id: string
+          course_sequence?: string | null
+          created_at?: string
+          id?: string
+          learning_outcomes?: string | null
+          notes?: string | null
+          overview?: string | null
+          tags?: string[] | null
+          teaching_modalities?: string | null
+          tools_platforms?: string | null
+          updated_at?: string
+        }
+        Update: {
+          assessments?: string | null
+          completed_sections?: string[] | null
+          course_id?: string
+          course_sequence?: string | null
+          created_at?: string
+          id?: string
+          learning_outcomes?: string | null
+          notes?: string | null
+          overview?: string | null
+          tags?: string[] | null
+          teaching_modalities?: string | null
+          tools_platforms?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fact_sheets_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      learning_outcomes: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          outcome: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          outcome: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          outcome?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_outcomes_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
         Row: {
           created_at: string
-          email: string | null
-          id: number
-          name: string | null
+          display_name: string | null
+          email: string
+          id: string
+          updated_at: string
         }
         Insert: {
           created_at?: string
-          email?: string | null
-          id?: number
-          name?: string | null
+          display_name?: string | null
+          email: string
+          id: string
+          updated_at?: string
         }
         Update: {
           created_at?: string
-          email?: string | null
-          id?: number
-          name?: string | null
+          display_name?: string | null
+          email?: string
+          id?: string
+          updated_at?: string
         }
         Relationships: []
+      }
+      task_steps: {
+        Row: {
+          checkpoints: string[]
+          completed: boolean
+          created_at: string
+          description: string | null
+          id: string
+          ordering: number
+          task_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          checkpoints?: string[]
+          completed?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          ordering: number
+          task_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          checkpoints?: string[]
+          completed?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          ordering?: number
+          task_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_steps_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tasks: {
+        Row: {
+          created_at: string
+          id: string
+          prompt: string | null
+          task_steps: Json[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          prompt?: string | null
+          task_steps: Json[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          prompt?: string | null
+          task_steps?: Json[]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tools_platforms: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          tool_platform: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          tool_platform: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          tool_platform?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tools_platforms_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_edge_function_extract_syllabus: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      create_task_with_steps: {
+        Args: {
+          p_user_id: string
+          p_course_id: string
+          p_objective: string
+          p_steps: Json
+        }
+        Returns: Json
+      }
+      get_task_with_steps: {
+        Args: { p_task_id: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
